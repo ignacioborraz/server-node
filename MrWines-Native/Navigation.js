@@ -1,0 +1,48 @@
+import React from "react";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { NavigationContainer } from "@react-navigation/native";
+
+import Home from "./src/pages/Home"
+import Shop from "./src/pages/Shop"
+
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+
+const Tab = createBottomTabNavigator();
+
+function MyTabs() {
+  return (
+    <Tab.Navigator
+      initialRouteName="Home"
+      screenOptions={{ tabBarActiveTintColor: "black" }}
+    >
+      <Tab.Screen
+        name="Home"
+        component={Home}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="home" size={24} color={color} />
+          ),
+          headerShown: false,
+        }}
+      />
+      <Tab.Screen
+        name="Shop"
+        component={Shop}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="shopping" size={24} color={color} />
+          ),
+          headerShown: false,
+        }}
+      />
+    </Tab.Navigator>
+  );
+}
+
+export default function Navigation() {
+  return (
+    <NavigationContainer>
+      <MyTabs/>
+    </NavigationContainer>
+  );
+}
