@@ -4,6 +4,8 @@ import { NavigationContainer } from "@react-navigation/native";
 
 import Home from "./src/pages/Home"
 import Shop from "./src/pages/Shop"
+import SignIn from "./src/pages/signIn"
+import SignUp from "./src/pages/signUp"
 
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
@@ -28,6 +30,26 @@ function MyTabs() {
       <Tab.Screen
         name="Shop"
         component={Shop}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="shopping" size={24} color={color} />
+          ),
+          headerShown: false,
+        }}
+      />
+      <Tab.Screen
+        name="Sign IN"
+        component={SignIn}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="shopping" size={24} color={color} />
+          ),
+          headerShown: false,
+        }}
+      />
+      <Tab.Screen
+        name="Sign up"
+        component={SignUp}
         options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="shopping" size={24} color={color} />

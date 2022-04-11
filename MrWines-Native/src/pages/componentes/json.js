@@ -7,7 +7,7 @@ const wines =[
     },
     {
         "id": 2,
-        "image":"https://http2.mlstatic.com/D_NQ_NP_948148-MCO44535757869_012021-O.webp",
+        "image":"https://www.vinoselkiosco.com/wp-content/uploads/2020/10/Luca_Pinot_Noir-320x480.png",
         "name": "Casillero del Diablo",
         "description": "$ 4.500",
     },
@@ -25,7 +25,7 @@ const wines =[
     },
     {
         "id": 5,
-        "image":"https://d2j6dbq0eux0bg.cloudfront.net/images/30491376/1993386065.jpg",
+        "image":"https://lalicorera.com/img/products/frontera-merlot.png",
         "name": "Michell Torino Merlot",
         "description": "$ 4.500",
     },

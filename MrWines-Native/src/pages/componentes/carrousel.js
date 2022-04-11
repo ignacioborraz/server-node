@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
       paddingBottom:2,
     },
   child: { height: "100%", width: 275, justifyContent: "flex-end" },
-  text: {textAlign: "center",  fontSize: 34,  },
+  text: {textAlign: "center",  fontSize: 20, color: "white", },
   imagedos: {
    height:"100%",
   },

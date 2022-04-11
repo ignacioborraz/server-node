@@ -1,6 +1,8 @@
 import React from "react";
-import {View, Text, StyleSheet, ScrollView, ImageBackground, Image} from "react-native"
+import {View, Text, StyleSheet, ScrollView, ImageBackground, Image, Dimensions} from "react-native"
 import Carrusel from '../pages/componentes/carrousel'
+var {height} = Dimensions.get('window')
+
 
 export default function Home (){
 
@@ -13,16 +15,14 @@ export default function Home (){
                 </Text>
             </ImageBackground>
             <ImageBackground source={require("../../assets/Barriles.jpg")} style = {styles.viewContainer2}>
-                <Text>
-                TOP FIVE
-                </Text>
+            <Text style={styles.ourTop}>OUR TOP</Text>
           <View style = {styles.carrusel}>   
       <Carrusel />
       </View>
 
             </ImageBackground>
             <ImageBackground source={require("../../assets/copa.jpg")} style = {styles.viewContainer3}>
-            <Text>ABOUT US</Text>
+            <Text style={styles.ourTop}>ABOUT US</Text>
                 <Text style={styles.text2}>
                 Hello wine lovers! You may be wondering what Mr. Wines is. Well, Mr. Wines started as a dream, became a project and ended up made in reality. We are group of 6
                 young entrepeneurs, passionate about wine and the infinite universe of experiences it offers us. The rich history, culture and folklore around this sacred drink only strengthens the tasty experience that the grape gives us.
@@ -36,17 +36,17 @@ export default function Home (){
 
 const styles = StyleSheet.create({
     viewContainer1: {
-        height: 543,
+        height: height,
         justifyContent: "center",
         alignItems: "center"
     },
     viewContainer2: {
-        height: 543,
+        height: height,
         justifyContent: "center",
         alignItems: "center"
     },
     viewContainer3: {
-        height: 543,
+        height: height,
         justifyContent: "center",
         alignItems: "center"
     },
@@ -76,5 +76,12 @@ const styles = StyleSheet.create({
     carrusel:{
         height: "70%",
         width: "70%"
-    }
+    },
+    ourTop: {
+        color: "white",
+        fontSize: 15,
+        textShadowColor: "black",
+        textShadowRadius: 10,
+        marginBottom: 5
+      },
   });
