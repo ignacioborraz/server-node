@@ -1,59 +1,34 @@
-import {
-    StyleSheet,
-    Text,
-    View,
-    AppRegistry,
-    TextInput,
-    TouchableHighlight,
-    Alert,
-    ImageBackground,
-    Dimensions
-  } from "react-native";
-  import React, { Component } from "react";
+import { StyleSheet, Text, View, AppRegistry, TextInput, TouchableHighlight, Alert, ImageBackground, Button, onChangeText} from "react-native";
+//   import React, { Component } from "react";
+import { useState } from "react";
+  import userActions from "../pages/redux/actions/userActions"
+  import {connect} from 'react-redux'
   import { AntDesign } from '@expo/vector-icons';
-  var {height} = Dimensions.get('window')
   
-  export default class Account extends Component {
-    constructor() {
-      super();
-      this.state = {
-        firstName: "",
-        lastName: "",
-        email: "",
-        password: "",
-        country: "",
-      };
-    }
-  
-    ChangeFirstName(firstName) {
-      this.setState({ firstName });
-    }
-    ChangeLastName(lastName) {
-      this.setState({ lastName });
-    }
-    ChangeEmail(email) {
-      this.setState({ email });
-    }
-    ChangePassword(password) {
-      this.setState({ password });
-    }
-    ChangeCountry(country) {
-      this.setState({ country });
-    }
-    buttonPressed() {
-      if (
-        this.state.firstName &&
-        this.state.lastName &&
-        this.state.email &&
-        this.state.password &&
-        this.state.country
-      ) {
-        Alert.alert("congratulations, here begins your adventure :D");
-      } else {
-        Alert.alert("You must complete all the fields");
-      }
-    }
-    render() {
+  function SignUp (props) {
+
+   //defino las variables de estado
+   const [name,setName] = useState("")
+   const [lastName,setLastName] = useState("")
+   const [userPhoto,setUserPhoto] = useState("")
+   const [mail,setMail] = useState("")
+   const [pass,setPass] = useState("")
+   //const [file,setFile] = useState()
+
+   const handleSubmit = (event) => {
+    //    event.preventDefault()
+       const userData={
+           userName: name.trim(),
+           lastName: lastName.trim(),
+           userPhoto: userPhoto.trim(),
+           email: mail.trim(),
+           password: pass.trim(),
+           admin: false,
+           from: "SignUpForm"
+       }
+       //console.log(userData)
+       props.signUpUser(userData)
+   }
       return (
         <ImageBackground
           source={require("../../assets/backgroundForm.jpg")}
@@ -64,40 +39,35 @@ import {
             <TextInput
               style={styles.input}
               placeholder="Name"
-              value={this.state.firstName}
-              onChangeText={(firstName) => this.ChangeFirstName(firstName)}
+              onChangeText={e=>setName(e)} required
             />
             <TextInput
               style={styles.input}
               placeholder="Last name"
-              value={this.state.lastName}
-              onChangeText={(lastName) => this.ChangeLastName(lastName)}
+              onChangeText={e=>setLastName(e)} required
             />
             <TextInput
               style={styles.input}
               placeholder="URL photo"
-              value={this.state.email}
-              onChangeText={(email) => this.ChangeEmail(email)}
-            />
+              onChangeText={e=>setUserPhoto(e)} required 
+               />
             <TextInput
               style={styles.input}
               placeholder="Email adress"
-              value={this.state.password}
-              onChangeText={(password) => this.ChangePassword(password)}
+              onChangeText={e=>setMail(e)} required
+              
             />
             <TextInput
               style={styles.input}
               placeholder="Create password"
-              textContentType="password"
-              value={this.state.country}
-              onChangeText={(country) => this.ChangeCountry(country)}
+              onChangeText={e=>setPass(e)} required
             />
             <View style={styles.viewSubmit}>
               <TouchableHighlight
-                onPress={() => this.buttonPressed()}
                 style={styles.submit}
+                onPress={handleSubmit}
               >
-                <Text style={styles.submit2}>Create Account</Text>
+                  <Text style={styles.submit2}>Create Account</Text>
               </TouchableHighlight>
               <TouchableHighlight
                 onPress={() => this.buttonPressed()}
@@ -120,7 +90,16 @@ import {
         </ImageBackground>
       );
     }
-  }
+    const mapDispatchToProps = {
+        signUpUser: userActions.signUpUser
+    }
+    const mapStateToProps = (state) => {
+        return {
+            message: state.userReducer.message
+        }
+    }
+    export default connect(mapStateToProps, mapDispatchToProps)(SignUp)
+  
   
   
   const styles = StyleSheet.create({

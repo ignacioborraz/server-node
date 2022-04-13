@@ -1,46 +1,27 @@
-import {
-    StyleSheet,
-    Text,
-    View,
-    AppRegistry,
-    TextInput,
-    TouchableHighlight,
-    Alert,
-    ImageBackground,
-  } from "react-native";
-  import React, { Component } from "react";
+import { StyleSheet, Text, View, AppRegistry, TextInput, TouchableHighlight, Alert, ImageBackground, Button, onChangeText} from "react-native";
+//   import React, { Component } from "react";
+import { useState } from "react";
+  import userActions from "../pages/redux/actions/userActions"
+  import {connect} from 'react-redux'
   import { AntDesign } from '@expo/vector-icons';
 
+
   
-  export default class Account extends Component {
-    constructor() {
-      super();
-      this.state = {
-        email: "",
-        password: "",
-      };
-    }
-  
+function SignIn (props){
+
+    const [mail,setMail] = useState("")
+    const [pass,setPass] = useState("")
+
+	const handleSubmit = (event) => {
+		// event.preventDefault()
+		const userLogin = {
+			email: mail.trim(),
+			password: pass
+		}
+		//console.log(userLogin)
+		props.logInUser(userLogin)
+	}
     
-    ChangeEmail(email) {
-      this.setState({ email });
-    }
-    ChangePassword(password) {
-      this.setState({ password });
-    }
-    buttonPressed() {
-      if (
-        
-        this.state.email &&
-        this.state.password
-        
-      ) {
-        Alert.alert("congratulations, here begins your adventure :D");
-      } else {
-        Alert.alert("You must complete all the fields");
-      }
-    }
-    render() {
       return (
         <ImageBackground
           source={require("../../assets/backgroundSignIn.jpg")}
@@ -52,24 +33,23 @@ import {
             <TextInput
               style={styles.input}
               placeholder="Email adress"
-              value={this.state.password}
-              onChangeText={(password) => this.ChangePassword(password)}
-            />
+              onChangeText={e=>setMail(e)} required            />
             <TextInput
               style={styles.input}
               placeholder="Password"
-              textContentType="Password"
-              value={this.state.country}
+              
+              onChangeText={e=>setPass(e)} required 
             />
             <View style={styles.viewSubmit}>
               <TouchableHighlight
-                onPress={() => this.buttonPressed()}
                 style={styles.submit}
+                type="submit"
+                onPress={handleSubmit}
               >
-                <Text style={styles.submit2}>Sign In</Text>
+                  <Text style={styles.submit2}>Sign In</Text>
               </TouchableHighlight>
               <TouchableHighlight
-                onPress={() => this.buttonPressed()}
+               
                 style={styles.submit}
               >
                 <View style={styles.submit2}>
@@ -89,8 +69,18 @@ import {
 
         </ImageBackground>
       );
-    }
+    
   }
+
+  const mapDispatchToProps = {
+      logInUser: userActions.logInUser
+  }
+  const mapStateToProps = (state) => {
+      return {
+          message: state.userReducer.message
+      }
+  }
+  export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
   
   const styles = StyleSheet.create({
     viewContainer: {
@@ -151,6 +141,7 @@ import {
       justifyContent: "center",
       alignItems: "center"
     },
+    
     viewSubmit: {
       flexDirection: "row",
       justifyContent: "space-around",

@@ -13,7 +13,7 @@ const Carrusel = () => (
 
     >
       {Wines.map((evento) => (
-          <ImageBackground source={{uri: evento.image}} style={styles.imagedos}>
+          <ImageBackground key={evento.name} source={{uri: evento.image}} style={styles.imagedos}>
         <View style={[styles.child, ]}>
           <Text style={styles.text}>{evento.name} </Text>
           <Text style={styles.text}>{evento.description}</Text>
