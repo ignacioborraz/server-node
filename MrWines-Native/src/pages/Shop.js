@@ -1,4 +1,7 @@
 import React from "react";
+import { useEffect, useState } from "react";
+import {useDispatch, useSelector} from 'react-redux'
+
 import {
   View,
   Text,
@@ -9,64 +12,51 @@ import {
   TextInput,
   ProgressViewIOSComponent,
 } from "react-native";
-import CardWines from "./componentes/cardWines"
+import CardWineShop from "./componentes/cardWineShop"
 import {connect} from "react-redux";
 import wineActions from "./redux/actions/wineActions";
-import { useEffect } from "react";
+
 
 var { height } = Dimensions.get("window");
 
-function Shop(props) {
-    // console.log(props)
+export default function Shop() {
+  const [range,setRange] = useState("")
+  const [search,setSearch] = useState("")
 
-    useEffect(() => {
-        props.getWines();
-      }, []);
-    
-      function filterWiness(event) {
-          props.getTypeWines(props.wines, event);
-          console.log(event)
-      }
+  const types =['Red','White','Rosé','Sparkling']
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+      dispatch(wineActions.getWines())
+  },[])
+
+  const wines = useSelector(store => store.wineReducer.wines).sort(((a, b) => a.nameWine - b.nameWine))
+  //console.log(wines)
+
 
   return (
-    <ScrollView>
+    <ScrollView >
       <ImageBackground
-        style={styles.customImg}
+        style={styles.customImg2}
         source={require("../../assets/tablas.jpg")}
       >
+        <View style={styles.customImg} >
         <View style={styles.view1}>
           <Text style={styles.text1}>Choose your wine</Text>
         </View>
         <View style={styles.containerInput}>
           <Text style={styles.text2}>Search:</Text>
-          <TextInput  onChangeText={(text) => {
-              filterWiness(text)}} style={styles.customInput} />
+          <TextInput  onChangeText={event => setSearch(event)} required style={styles.customInput} />
         </View>
         <View>
-            <CardWines filterWines={props.filterWine}/>
+        <CardWineShop wines={wines} search={search}/>
+        </View>
         </View>
       </ImageBackground>
     </ScrollView>
   );
 }
-
-const mapDispatchToProps = {
-    getWines: wineActions.getWines,
-    getTypeWines: wineActions.getTypeWines
-  };
-  
-  const mapStateToProps = (state) => {
-    return {
-      wines: state.wineReducer.wines,
-      types: state.wineReducer.types,
-      filterWine: state.wineReducer.filterWine,
-      oneWine: state.wineReducer.oneWine,
-      auxWine: state.wineReducer.auxWine
-      
-    };
-  };
-  
-  export default connect(mapStateToProps, mapDispatchToProps)(Shop);
 
 const styles = StyleSheet.create({
   view1: {
@@ -75,7 +65,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   customImg: {
-    height: height,
+    height: "auto",
+  },
+  customImg2: {
+    height: "auto",
   },
   text1: {
     fontSize: 35,

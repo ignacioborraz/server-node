@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-// const urlMrWines = 'http://localhost:4000/'
+//const urlMrWines = 'http://localhost:4000/'
 const urlMrWines = 'https://mrwines.herokuapp.com/'
 
 const userActions = {
@@ -31,10 +31,7 @@ const userActions = {
         console.log(userData)
         return async (dispatch, getState) => {
             const res = await axios.post(urlMrWines+'api/auth/signUp', {userData})
-            console.log("ESTA ES LA RESPUESTA")
-            console.log("ESTA ES LA RESPUESTA")
-        console.log(res)
-
+            console.log(res)
             dispatch({ //despacho al reductor
                 type: 'message',
                 payload: {
@@ -50,15 +47,12 @@ const userActions = {
         //el formulario debe tener los inputs de registro en una variable que se llame userLogin
         //chequeen el modelo para ver LOS CAMPOS REQUERIDOS
         //falta configurar el cambio a ADMIN
-        // console.log(userLogin)
+        console.log(userLogin)
         return async (dispatch, getState) => {
             const res = await axios.post(urlMrWines+'api/auth/logIn', {userLogin})
-            console.log("ESTA ES LA RESPUESTA de login")
-            console.log("ESTA ES LA RESPUESTA de login")
-           
             console.log(res)
             if(res.data.success) {
-                // localStorage.setItem('token',res.data.response.token)
+                localStorage.setItem('token',res.data.response.token)
                 dispatch({
                     type: 'user',
                     payload: res.data.response.userData

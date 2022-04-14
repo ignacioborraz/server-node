@@ -1,14 +1,14 @@
 const initialState = {
     wines: [],
     types: [],
-    filterWine: [],
-    oneWine: {},
+    filter: [],
+    onlyWine: {},
     auxWine: []
 }
 
 const wineReducer = (state = initialState, action) => {
-    //console.log(action)
-    //console.log(state)
+    console.log(action)
+    console.log(state.filterWines)
     switch(action.type) {
         case 'GET_WINES':
             return {
@@ -23,7 +23,7 @@ const wineReducer = (state = initialState, action) => {
         case 'ONE_WINE':
             return {
                 ...state,
-                oneWine: action.payload
+                onlyWine: action.payload
             }
         case 'UPD_WINE':
             let wines = [...state.wines]
@@ -37,6 +37,11 @@ const wineReducer = (state = initialState, action) => {
             return {
                 ...state,
                 cities: action.payload
+            }
+        case 'FIL_WINES':
+            return {
+                ...state,
+                filter: state.wines.filter(everyWine => everyWine.nameWine.toLowerCase().startsWith(action.payload.toLowerCase()))
             }
         default:
             return state

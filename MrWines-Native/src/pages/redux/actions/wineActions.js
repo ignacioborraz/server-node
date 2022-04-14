@@ -72,6 +72,12 @@ const wineActions = {
         }
     },
 
+    filterWines: (search) => {
+        return (dispatch,getState)=>{
+            dispatch({type:'FIL_WINES', payload:search})
+        }
+    }
+
 }
 
 export default wineActions
