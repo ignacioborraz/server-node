@@ -4,10 +4,12 @@ import { useState } from "react";
   import userActions from "../pages/redux/actions/userActions"
   import {connect} from 'react-redux'
   import { AntDesign } from '@expo/vector-icons';
+  import { useNavigation } from "@react-navigation/native";
 
 
   
 function SignIn (props){
+    const navigation = useNavigation()
 
     const [mail,setMail] = useState("")
     const [pass,setPass] = useState("")
@@ -46,7 +48,7 @@ function SignIn (props){
                 type="submit"
                 onPress={handleSubmit}
               >
-                  <Text style={styles.submit2}>Sign In</Text>
+                  <Text style={styles.submit2} onPress={()=>{navigation.navigate("Home")}}>Sign In</Text>
               </TouchableHighlight>
               <TouchableHighlight
                

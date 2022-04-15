@@ -6,6 +6,7 @@ import Home from "./src/pages/Home"
 import Shop from "./src/pages/Shop"
 import SignIn from "./src/pages/signIn"
 import SignUp from "./src/pages/signUp"
+import Detail from "./src/pages/Detail"
 
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
@@ -20,6 +21,16 @@ function MyTabs() {
       <Tab.Screen
         name="Home"
         component={Home}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="home" size={24} color={color} />
+          ),
+          headerShown: false,
+        }}
+      />
+      <Tab.Screen
+        name="Detail"
+        component={Detail}
         options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="home" size={24} color={color} />

@@ -1,14 +1,19 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useLayoutEffect } from "react";
 import { connect } from "react-redux";
-import { Image, StyleSheet, Text, TouchableOpacity, View, ScrollView, } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View, ScrollView} from "react-native";
 import wineActions from "../redux/actions/wineActions";
 import {useDispatch, useSelector} from 'react-redux'
 import Home from '../../../Navigation'
+import Detail from "../Detail";
+import { useNavigation } from "@react-navigation/native";
+
 
 
 
 export default function CardWineShop(props) {
-  console.log(props)
+ 
+
+const navigation = useNavigation()
 
   const dispatch = useDispatch()
 
@@ -29,11 +34,10 @@ export default function CardWineShop(props) {
             data.map(everyWine => (
               
                 <TouchableOpacity key={everyWine._id} style={styles.container} 
-                onPress={() => navigation.navigate(Home)} >  
+                 onPress={()=>{navigation.navigate("Detail",{id:everyWine._id})}}>  
                     <Image source={{ uri: everyWine.photo }} style={styles.image} />
                     <Text style={styles.text}>{everyWine.nameWine}</Text>
                     <Text style={styles.text2}>$ {everyWine.price}</Text>
-                    
 
                 </TouchableOpacity> 
             
@@ -49,16 +53,17 @@ export default function CardWineShop(props) {
 
 const styles = StyleSheet.create({
   container: {
-      position: "relative",
+      // position: "relative",
       width: "100%",
       height: 250,
-      marginBottom: 10,
+      marginBottom: 150,
+      alignItems: "center",
 
   },
   image: {
-      width: "100%",
-      height: "100%",
-
+      width: 100,
+      height: 350,
+marginBottom: 50,
   },
   text: {
       width: "100%",
@@ -70,7 +75,7 @@ const styles = StyleSheet.create({
       backgroundColor: "#000000c0",
       zIndex: 10,
       position: "absolute",
-      top: "40%"
+      bottom: 1,
   },
   text2: {
     width: "100%",
