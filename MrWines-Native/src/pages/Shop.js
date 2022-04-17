@@ -36,11 +36,12 @@ export default function Shop() {
 
 
   return (
-    <ScrollView >
+   
       <ImageBackground
         style={styles.customImg2}
         source={require("../../assets/tablas.jpg")}
       >
+         <ScrollView>
         <View style={styles.customImg} >
         <View style={styles.view1}>
           <Text style={styles.text1}>Choose your wine</Text>
@@ -53,48 +54,52 @@ export default function Shop() {
         <CardWineShop wines={wines} search={search}/>
         </View>
         </View>
+        </ScrollView>
       </ImageBackground>
-    </ScrollView>
+   
   );
 }
 
 const styles = StyleSheet.create({
   view1: {
-    height: 90,
+    height: 70,
     justifyContent: "flex-end",
     alignItems: "center",
   },
   customImg: {
-    height: "auto",
+    height: "100%",
   },
   customImg2: {
-    height: "auto",
+    height: "100%",
   },
   text1: {
-    fontSize: 35,
-    textShadowColor: "black",
+    fontSize: 40,
+    textShadowColor: "#333",
     textShadowRadius: 10,
-    textShadowRadius: 3,
     color: "red",
     fontWeight: "bold",
   },
   customInput: {
     borderWidth: 1,
     borderColor: "black",
-    width: 150,
+    width: 200,
+    height: 35,
     backgroundColor: "white",
     borderRadius: 10,
     color: "white",
     textAlign: "center",
-    color: "black"
+    justifyContent: "center",
+    alignItems: 'center',
   },
   containerInput: {
+    display: 'flex',
     justifyContent: "center",
-    marginLeft: 10
+    alignItems: 'center',
+    width: '100%'
   },
   text2: {
     fontSize: 15,
     color: "white",
-    marginTop: 10
+    marginTop: 15
   },
 });

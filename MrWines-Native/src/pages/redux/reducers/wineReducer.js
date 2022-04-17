@@ -7,8 +7,8 @@ const initialState = {
 }
 
 const wineReducer = (state = initialState, action) => {
-    console.log(action)
-    console.log(state.filterWines)
+    //console.log(action)
+    //console.log(state.filterWines)
     switch(action.type) {
         case 'GET_WINES':
             return {

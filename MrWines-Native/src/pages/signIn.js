@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, AppRegistry, TextInput, TouchableHighlight, Alert, ImageBackground, Button, onChangeText} from "react-native";
-//   import React, { Component } from "react";
+  import React, { Component } from "react";
 import { useState } from "react";
   import userActions from "../pages/redux/actions/userActions"
   import {connect} from 'react-redux'

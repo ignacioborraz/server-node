@@ -1,21 +1,17 @@
 import React, { useEffect, useState, useLayoutEffect } from "react";
 import { connect } from "react-redux";
-import { Image, StyleSheet, Text, TouchableOpacity, View, ScrollView} from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View, ScrollView, Button} from "react-native";
 import wineActions from "../redux/actions/wineActions";
 import {useDispatch, useSelector} from 'react-redux'
-import Home from '../../../Navigation'
-import Detail from "../Detail";
 import { useNavigation } from "@react-navigation/native";
 
 
 
 
 export default function CardWineShop(props) {
- 
-
 const navigation = useNavigation()
 
-  const dispatch = useDispatch()
+const dispatch = useDispatch()
 
   useEffect(() => {
       dispatch(wineActions.filterWines(props.search))
@@ -34,16 +30,38 @@ const navigation = useNavigation()
             data.map(everyWine => (
               
                 <TouchableOpacity key={everyWine._id} style={styles.container} 
-                 onPress={()=>{navigation.navigate("Detail",{id:everyWine._id})}}>  
-                    <Image source={{ uri: everyWine.photo }} style={styles.image} />
+                 onPress={()=>{navigation.navigate("Detail",{id:everyWine._id})}}> 
+                 
+                 <View style={styles.containerimg}>
+                 <Image source={{ uri: everyWine.photo }} style={styles.image} />
+                  
+                    <View style={styles.containertext}>
                     <Text style={styles.text}>{everyWine.nameWine}</Text>
-                    <Text style={styles.text2}>$ {everyWine.price}</Text>
-
+                    <Text style={styles.text3}> {everyWine.type} - {everyWine.variety}</Text>
+                    <Text style={styles.text2}>$ {everyWine.price}</Text>  
+                    <View style={styles.containerbottom}>
+                    <Button
+                    title="Buy Now"
+                    color="#824d48"
+                  />
+                  <Button
+                  title="Add to Cart"
+                  color="#824d48"
+                />
+                    </View>
+                    
+                    </View>
+                    </View>
+                    
+                    
+                    
                 </TouchableOpacity> 
             
             ))
             ) : (
-                <Text style={styles.texto}>No matches with your search. Please try again. Or contact us to give you a solution.</Text>
+              <View style ={styles.matches}>
+                <Text style={styles.texto}>No matches with your search. Please try again, Or contact us to give you a solution.</Text>
+                </View>
               )}
   </ScrollView>
     </>
@@ -54,51 +72,83 @@ const navigation = useNavigation()
 const styles = StyleSheet.create({
   container: {
       // position: "relative",
-      width: "100%",
-      height: 250,
-      marginBottom: 150,
+
+     
+      marginTop: 30,
+      marginBottom: 25,
       alignItems: "center",
+      
 
   },
+  containerimg:{
+    height: 450,
+    width: 300,
+    backgroundColor: "white",
+    alignItems: "center",
+    paddingTop: 10,
+    borderRadius: 15,
+    borderWidth: 1,
+    borderColor: "black",
+    marginBottom: 10,
+  },
   image: {
-      width: 100,
-      height: 350,
-marginBottom: 50,
+      width: 200,
+    height:220,
+    resizeMode: 'contain'
   },
   text: {
-      width: "100%",
-      color: "white",
+      width: 200,
+      color: "black",
       fontSize: 20,
       lineHeight: 34,
       fontWeight: "bold",
       textAlign: "center",
-      backgroundColor: "#000000c0",
-      zIndex: 10,
-      position: "absolute",
-      bottom: 1,
+      //backgroundColor: "#000000c0",
   },
   text2: {
-    width: "100%",
-    color: "white",
+    width: 200,
+    color: "black",
     fontSize: 20,
     lineHeight: 34,
     fontWeight: "bold",
     textAlign: "center",
-    backgroundColor: "red",
-    zIndex: 10,
-    position: "absolute",
-    top: "53%"
+   
+  
 },
-  texto: {
-      width: "90%",
-      color: "white",
-      fontSize: 40,
-      // lineHeight: 84,
-      fontWeight: "bold",
-      marginLeft: 20,
-      textAlign: "center",
-      backgroundColor: "blue",
-      top: "20%",
-      height: 150
+  text3: {
+    color: "black",
+    width: 200,
+    zIndex: 10,
+    textAlign: "center",
+  
+  },
+  containertext: {
+  marginTop: 2,
+
+  },
+  containerbottom:{
+    
+    justifyContent: 'space-around',
+    height: 90,
+    margin: 25,
+    
+    //flexDirection: 'row',
+  },
+  Button:{
+    borderRadius: 45,
+  },
+  matches:{
+    backgroundColor: "white",
+    height: 300,
+    width: "75%",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "black",
+    margin: 50,
+    borderRadius: 15,
+  },
+  texto:{
+    fontSize: 20,
   }
 });

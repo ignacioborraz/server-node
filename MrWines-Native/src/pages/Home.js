@@ -52,25 +52,28 @@ const styles = StyleSheet.create({
     },
     customLogo: {
         position: "absolute",
-        top: 170,
-        width: 150,
-        height: 150,
+        top: "10%",
+        width: 350,
+        height: 350,
         margin: 0,
         padding: 0
     },
     text1: {
-        color: "#B33030",
+        color: "red",
         fontWeight: "bold",
-        fontSize: 15,
-        marginTop: 60
+        fontSize: 25,
+        marginTop: 190,
+        textShadowColor: "#333",
+        textShadowRadius: 10,
+        
     },
     text2: {
         padding: 20,
         backgroundColor: "#rgba(79, 79, 79, 0.58)",
-        borderRadius: 50,
+        borderRadius: 10,
         color: "white",
         textAlign: "center",
-        fontSize: 10,
+        fontSize: 18,
         width: 300,
     },
     carrusel:{
@@ -79,9 +82,10 @@ const styles = StyleSheet.create({
     },
     ourTop: {
         color: "white",
-        fontSize: 15,
+        fontSize: 40,
+        fontWeight: 'bold',
         textShadowColor: "black",
         textShadowRadius: 10,
-        marginBottom: 5
+        marginBottom: 10,
       },
   });
