@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import DetalleScreen from '../Detail';
+// import BasketScreen from '../Basket';
 // import CommentsScreen from '../Screens/commentsScreen';
 import ShopScreen from '../Shop';
 
@@ -16,8 +17,8 @@ export default function ShopStackNavigation() {
             <Stack.Screen name="Shop" component={ShopScreen}
                 options={{ headerShown: false, }} />
             <Stack.Screen name="Detail" component={DetalleScreen} />
-            {/* <Stack.Screen name="Comments" component={CommentsScreen} options={({ navigation, route }) => ({
-                headerTitle: "Comments"
+            {/* <Stack.Screen name="Basket" component={BasketScreen} options={({ navigation, route }) => ({
+                headerTitle: "Basket"
             })} /> */}
         </Stack.Navigator>
 

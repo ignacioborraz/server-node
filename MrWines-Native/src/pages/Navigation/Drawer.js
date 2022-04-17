@@ -3,6 +3,7 @@ import { createDrawerNavigator, DrawerContentScrollView } from '@react-navigatio
 import Home from '../Home';
 import ShopStackNavigation from './Stack';
 import UserTabsNavigation from './Tabs'
+import Basket from "../Basket"
 import {View, Text, StyleSheet, ScrollView, ImageBackground, Image, Dimensions} from "react-native"
 import MenuButtonItem from '../componentes/MenuButtonItem';
 
@@ -21,7 +22,8 @@ export default function DrawerNavigator() {
         >
             <Drawer.Screen name="Home" component={Home} />
             <Drawer.Screen name="Shop" component={ShopStackNavigation} />
-            <Drawer.Screen name="User" component={UserTabsNavigation} />   
+            <Drawer.Screen name="User" component={UserTabsNavigation} /> 
+            <Drawer.Screen name="Basket" component={Basket} /> 
         </Drawer.Navigator>
 
     );
@@ -52,6 +54,12 @@ text = "User"
 image = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ96cZvULb2zGQ5Cpsa872oGd8rOCP3cEjrwg&usqp=CAU"
 onPress = {()=> navigation.navigate("User")}
 />
+<MenuButtonItem
+text = "Basket"
+image = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ96cZvULb2zGQ5Cpsa872oGd8rOCP3cEjrwg&usqp=CAU"
+onPress = {()=> navigation.navigate("Basket")}
+/>
+
 
 </DrawerContentScrollView>
 

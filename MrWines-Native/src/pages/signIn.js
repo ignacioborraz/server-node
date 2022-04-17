@@ -48,7 +48,7 @@ function SignIn (props){
                 type="submit"
                 onPress={handleSubmit}
               >
-                  <Text style={styles.submit2} onPress={()=>{navigation.navigate("Home")}}>Sign In</Text>
+                  <Text style={styles.submit2} onPress={()=> {navigation.navigate("Home")}}>Sign In </Text>
               </TouchableHighlight>
               <TouchableHighlight
                
@@ -98,7 +98,7 @@ function SignIn (props){
       borderWidth: 1,
       marginBottom: 10,
       width: "100%",
-      color: "#5B5656",
+      color: "black",
       borderRadius: 10,
       textAlign: "center",
     },
@@ -107,7 +107,7 @@ function SignIn (props){
       height: 300,
       backgroundColor: "#rgba(79, 79, 79, 0.4)",
       padding: 30,
-      borderRadius: 50,
+      borderRadius: 10,
       borderColor: "black",
       borderWidth: 1,
       justifyContent: "center",

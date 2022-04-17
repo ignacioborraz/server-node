@@ -8,7 +8,7 @@ import { useNavigation } from "@react-navigation/native";
 
 
 
-export default function CardWineShop(props) {
+function CardWineShop(props) {
 const navigation = useNavigation()
 
 const dispatch = useDispatch()
@@ -44,10 +44,14 @@ const dispatch = useDispatch()
                     title="Buy Now"
                     color="#824d48"
                   />
+                  {props.user ? (
+                    (props.products.includes(everyWine._id)) ? (
                   <Button
                   title="Add to Cart"
                   color="#824d48"
+                  onPress={()=> {navigation.navigate("Detail",{id:everyWine._id})}}
                 />
+                   ): null ): null}
                     </View>
                     
                     </View>
@@ -67,7 +71,20 @@ const dispatch = useDispatch()
     </>
   );
 }
+const mapDispatchToProps = {
+  addProduct: basketActions.addProduct,
+  deleteProduct: basketActions.deleteProduct,
+  getUserBasket: basketActions.getUserBasket
+}
 
+const mapStateToProps = (state) => {
+  return {
+      products: state.productReducer.products,
+      user: state.userReducer.user
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CardWineShop)
 
 const styles = StyleSheet.create({
   container: {
@@ -87,8 +104,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: 10,
     borderRadius: 15,
-    borderWidth: 1,
-    borderColor: "black",
+    // borderWidth: 1,
+    // borderColor: "black",
     marginBottom: 10,
   },
   image: {

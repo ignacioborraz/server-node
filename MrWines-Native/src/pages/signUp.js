@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, AppRegistry, TextInput, TouchableHighlight, Alert, ImageBackground, Button, onChangeText} from "react-native";
+import { StyleSheet, Text, View, AppRegistry, TextInput, TouchableHighlight, Alert, ImageBackground, Button, onChangeText, ScrollView} from "react-native";
 //   import React, { Component } from "react";
 import { useState } from "react";
   import userActions from "../pages/redux/actions/userActions"
@@ -34,6 +34,7 @@ import { useState } from "react";
           source={require("../../assets/backgroundForm.jpg")}
           style={styles.viewContainer}
         >
+          <ScrollView>
           <Text style={styles.text0}>Sign Up</Text>
           <View style={styles.containerForm}>
             <TextInput
@@ -87,6 +88,7 @@ import { useState } from "react";
                 <Text style = {styles.text2}>
                     Please sign in
                 </Text>
+                </ScrollView>
         </ImageBackground>
       );
     }
@@ -125,7 +127,7 @@ import { useState } from "react";
       height: 300,
       backgroundColor: "#rgba(79, 79, 79, 0.4)",
       padding: 30,
-      borderRadius: 50,
+      borderRadius: 10,
       borderColor: "black",
       borderWidth: 1,
     },
