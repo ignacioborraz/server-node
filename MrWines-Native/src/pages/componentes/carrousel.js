@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
       width: "100%", 
       paddingBottom:2,
     },
-  child: { height: "100%", width: 260, alignItems: "center", justifyContent: "flex-end" },
+  child: { height: "100%", width: 270, alignItems: "center", justifyContent: "flex-end" },
   text: {textAlign: "center",  fontSize: 30, color: "white", },
   imagedos: {
    height:"100%",

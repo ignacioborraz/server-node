@@ -18,9 +18,14 @@ import {
   import React, {useEffect, useState} from "react"
   import { Entypo } from '@expo/vector-icons';
   import {useDispatch, useSelector} from 'react-redux'
+  import { useNavigation } from "@react-navigation/native";
+
 
   
   function Detail(props) {
+
+    const navigation = useNavigation()
+
   
       const {id} = props.route.params
       const dispatch = useDispatch()
@@ -45,14 +50,14 @@ import {
               <TouchableHighlight
                   style={styles.submit}
                   type="submit"
-                  onPress={() => Alert.alert("Simple Button pressed")}
+                  onPress={() => Alert.alert("The product has been added")}
                 >
                     <Text style={styles.textSubmit}>Buy</Text>
                 </TouchableHighlight>
                 <TouchableHighlight
                   style={styles.submit2}
                   type="submit"
-                  onPress={() => Alert.alert("Simple Button pressed")}
+                  onPress={()=> {navigation.navigate("Basket")}}
                 >
                     <Text style={styles.textSubmit}>
                     <Entypo name="shopping-cart" size={18} color="black" />

@@ -75,11 +75,8 @@ function Basket(props) {
     }
 
 
-
-
-
   return (
-    <ScrollView>
+    
       <ImageBackground
         style={styles.imageBackgroundContainer}
         source={require("../../assets/botellas.jpg")}
@@ -94,14 +91,14 @@ function Basket(props) {
           </View>
           <View style={styles.view4}>
             <View>
-              <Text>Casillero del diablo</Text>
+              <Text>{everyWine.idWine.nameWine}</Text>
             </View>
             <View>
-              <Text>Red - Malbec</Text>
+              <Text>{everyWine.idWine.type} - {everyWine.idWine.variety}</Text>
             </View>
           </View>
           <View style={styles.view5}>
-            <Text>151 U$D</Text>
+            <Text>{everyWine.idWine.price} U$D</Text>
           </View>
           <View style={styles.view6}>
             <TouchableHighlight
@@ -114,9 +111,9 @@ function Basket(props) {
             </TouchableHighlight>
           </View>
         </View>) : (
-                        <View>
+                        <View style={styles.view11}>
                             <Text>Your cart is empty</Text>
-                            <Text>Choose a product in the </Text>
+                            <Text>Choose a product in the Shop! </Text>
                         </View>
                         )
 }
@@ -147,7 +144,7 @@ function Basket(props) {
           </View>
         </View>
       </ImageBackground>
-    </ScrollView>
+    
   );
 }
 const mapDispatchToProps = {
@@ -169,7 +166,7 @@ const mapDispatchToProps = {
 
 const styles = StyleSheet.create({
   imageBackgroundContainer: {
-    height: 600, //Colocar height auto
+    height: "100%",
   },
   view1: {
     height: 100,
@@ -264,5 +261,16 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     alignItems: "center",
     height: 98
-  }
+  },
+view11:{
+    backgroundColor: "white",
+    borderWidth: 1,
+    borderColor: "black",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "94%",
+    marginLeft: 10,
+    borderRadius: 10,
+    marginTop:"20%",
+}
 });

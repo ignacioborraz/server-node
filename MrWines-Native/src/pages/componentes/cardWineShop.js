@@ -2,6 +2,7 @@ import React, { useEffect, useState, useLayoutEffect } from "react";
 import { connect } from "react-redux";
 import { Image, StyleSheet, Text, TouchableOpacity, View, ScrollView, Button} from "react-native";
 import wineActions from "../redux/actions/wineActions";
+import basketActions from "../redux/actions/basketActions";
 import {useDispatch, useSelector} from 'react-redux'
 import { useNavigation } from "@react-navigation/native";
 
@@ -11,17 +12,37 @@ import { useNavigation } from "@react-navigation/native";
 function CardWineShop(props) {
 const navigation = useNavigation()
 
+const [reload, setReload] = useState(false)
+const [basket,setBasket] = useState([])
+
 const dispatch = useDispatch()
 
-  useEffect(() => {
-      dispatch(wineActions.filterWines(props.search))
-  },[props.search])
+useEffect(() => {
+    dispatch(wineActions.filterWines(props.search))
+},[props.search])
 
-  const filterFromRedux = useSelector(store => store.wineReducer.filter).sort(((a, b) => a.nameWine - b.nameWine))
-  console.log(filterFromRedux)
-  
-  let data = props.search ? filterFromRedux : props.wines
-  //console.log(data)
+const filterFromRedux = useSelector(store => store.wineReducer.filter).sort(((a, b) => a.nameWine - b.nameWine))
+//console.log(filterFromRedux)
+
+let data = props.search ? filterFromRedux : props.wines
+//console.log(data)
+
+async function toAdd(event) {
+    const idWine = event.target.value
+    //console.log(idWine)
+    await props.addProduct(idWine)
+    setReload(!reload)
+}
+
+useEffect(() => {
+    dispatch(basketActions.getUserBasket())
+        .then(response=>setBasket(response))
+        //.then(response=>console.log(response))
+},[reload])
+
+useEffect(() => {
+    
+},[reload])
 
   return (
     <>
@@ -40,18 +61,20 @@ const dispatch = useDispatch()
                     <Text style={styles.text3}> {everyWine.type} - {everyWine.variety}</Text>
                     <Text style={styles.text2}>$ {everyWine.price}</Text>  
                     <View style={styles.containerbottom}>
-                    <Button
-                    title="Buy Now"
-                    color="#824d48"
-                  />
-                  {props.user ? (
-                    (props.products.includes(everyWine._id)) ? (
-                  <Button
-                  title="Add to Cart"
-                  color="#824d48"
-                  onPress={()=> {navigation.navigate("Detail",{id:everyWine._id})}}
-                />
-                   ): null ): null}
+                    
+                 {props.user ? (
+                            (props.products.includes(everyWine._id)) ? (
+                                <TouchableHighlight  onPress={()=>{navigation.navigate("Detail",{id:everyWine._id})}}>
+                                    <Button title="Add to Cart" color="#824d48"/>
+                                </TouchableHighlight>    
+                            ) : (
+                                <Button title="Buy"  onPress={toAdd}/>
+                            )
+                        ) : (
+                            <Button title="Buy"
+                            color="#824d48" />
+                        )}
+
                     </View>
                     
                     </View>
