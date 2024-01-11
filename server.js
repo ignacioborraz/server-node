@@ -8,7 +8,6 @@ import router from "./src/routers/index.router.js";
 import errorHandler from "./src/middlewares/errorHandler.js";
 import pathHandler from "./src/middlewares/pathHandler.js";
 import __dirname from "./utils.js";
-import events from "./src/data/fs/events.fs.js";
 
 //server
 const server = express();
