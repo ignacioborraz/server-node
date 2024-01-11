@@ -16,5 +16,4 @@ document.querySelector("#newEvent").addEventListener("click", (event) => {
   place && (data.place = place);
   date && (data.date = date);
   console.log(data);
-  socket.emit("new event", data);
 });

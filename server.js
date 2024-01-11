@@ -14,21 +14,7 @@ import events from "./src/data/fs/events.fs.js";
 const server = express();
 const PORT = 8080;
 const ready = console.log("server ready on port " + PORT);
-const httpServer = createServer(server);
-const socketServer = new Server(httpServer);
-httpServer.listen(PORT, ready);
-socketServer.on("connection", (socket) => {
-  console.log(`client ${socket.id} connected`);
-  socket.emit("events", { events: events.readEvents() });
-  socket.on("new event", async (data) => {
-    try {
-      await events.createEvent(data);
-      socketServer.emit("events", { events: events.readEvents() });
-    } catch (error) {
-      console.log(error);
-    }
-  });
-});
+server.listen(PORT, ready);
 
 //views
 server.engine("handlebars", engine());
