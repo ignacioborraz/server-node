@@ -25,7 +25,7 @@ socket.on("all", (data) => {
   data = data
     .map(
       (each) =>
-        `<p><span class="fw-bold">${each.name}:</span> ${each.message}</p>`
+        `<p class="p-2 m-2 my-1"><span class="fw-bold">${each.name}:</span> ${each.message}</p>`
     )
     .join("");
   document.querySelector("#chats").innerHTML = data;

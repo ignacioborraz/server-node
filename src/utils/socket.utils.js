@@ -7,9 +7,12 @@ export default (socket) => {
   socket.on("user", () => {
     socket.emit("all", messages);
   });
-  socket.emit("messages", messages);
+  socket.emit("all", messages);
   socket.on("new chat", (data) => {
+    if (messages.length === 10) {
+      messages.shift();
+    }
     messages.push(data);
     socketServer.emit("all", messages);
   });
-}
+};
