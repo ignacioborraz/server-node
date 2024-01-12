@@ -8,12 +8,16 @@ import router from "./src/routers/index.router.js";
 import errorHandler from "./src/middlewares/errorHandler.js";
 import pathHandler from "./src/middlewares/pathHandler.js";
 import __dirname from "./utils.js";
+import socketUtils from "./src/utils/socket.utils.js";
 
 //server
 const server = express();
 const PORT = 8080;
 const ready = console.log("server ready on port " + PORT);
-server.listen(PORT, ready);
+const httpServer = createServer(server);
+const socketServer = new Server(httpServer);
+httpServer.listen(PORT, ready);
+socketServer.on("connection", socketUtils );
 
 //views
 server.engine("handlebars", engine());
@@ -30,3 +34,5 @@ server.use(morgan("dev"));
 server.use("/", router);
 server.use(errorHandler);
 server.use(pathHandler);
+
+export { socketServer }
