@@ -1,3 +1,4 @@
+import "dotenv/config.js"
 import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
@@ -9,11 +10,15 @@ import errorHandler from "./src/middlewares/errorHandler.js";
 import pathHandler from "./src/middlewares/pathHandler.js";
 import __dirname from "./utils.js";
 import socketUtils from "./src/utils/socket.utils.js";
+import dbUtils from "./src/utils/db.utils.js";
 
 //server
 const server = express();
-const PORT = 8080;
-const ready = console.log("server ready on port " + PORT);
+const PORT = process.env.PORT || 8080;
+const ready = ()=> {
+  console.log("server ready on port " + PORT);
+  dbUtils()
+}
 const httpServer = createServer(server);
 const socketServer = new Server(httpServer);
 httpServer.listen(PORT, ready);
