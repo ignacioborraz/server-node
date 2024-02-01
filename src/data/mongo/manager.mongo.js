@@ -1,4 +1,4 @@
-//importar los modelos para luego generar las instancias de los diferentes managers
+import { Types } from "mongoose";
 import Event from "./models/event.model.js";
 import User from "./models/user.model.js";
 import Order from "./models/order.model.js";
@@ -16,18 +16,45 @@ class MongoManager {
       throw error;
     }
   }
-  async read(obj) {
+  async read({ filter, sortAndPaginate }) {
     try {
-      let { filter, order } = obj;
-      const all = await this.model
-        .find(filter)
-        .sort(order);
+      //const all = await this.model.find(filter)
+      const all = await this.model.paginate(filter, sortAndPaginate);
       if (all.length === 0) {
         const error = new Error("There aren't documents");
         error.statusCode = 404;
         throw error;
       }
       return all;
+    } catch (error) {
+      throw error;
+    }
+  }
+  async report(uid) {
+    try {
+      const report = await this.model.aggregate([
+        { $match: { user_id: new Types.ObjectId(uid) } },
+        {
+          $lookup: {
+            foreignField: "_id",
+            from: "events",
+            localField: "event_id",
+            as: "event_id",
+          },
+        },
+        {
+          $replaceRoot: {
+            newRoot: {
+              $mergeObjects: [{ $arrayElemAt: ["$event_id", 0] }, "$$ROOT"],
+            },
+          },
+        },
+        { $set: { subTotal: { $multiply: ["$quantity", "$price"] } } },
+        { $group: { _id: "$user_id", total: { $sum: "$subTotal" } } },
+        { $project: { _id: 0, user_id: "$_id", total: "$total", date: new Date() } },
+        //{ $merge: { into: "bills" } },
+      ]);
+      return report;
     } catch (error) {
       throw error;
     }
@@ -64,8 +91,8 @@ class MongoManager {
     try {
       let { filter } = obj;
       let stats = await this.model.find(filter).explain("executionStats");
-      console.log(stats)
-      console.log(stats.executionStats)
+      console.log(stats);
+      console.log(stats.executionStats);
       stats = {
         quantity: stats.executionStats.nReturned,
         time: stats.executionStats.executionTimeMillis,

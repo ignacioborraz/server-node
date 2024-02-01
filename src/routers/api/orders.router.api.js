@@ -30,6 +30,18 @@ ordersRouter.get("/",async(req,res,next)=>{
     return next(error)
   }
 })
+ordersRouter.get("/report/:uid",async(req,res,next)=>{
+  try {
+    const { uid } = req.params;
+    const one = await orders.report(uid);
+    return res.json({
+      statusCode: 200,
+      response: one,
+    });
+  } catch (error) {
+    return next(error);
+  }
+})
 ordersRouter.get("/:oid", async(req,res,next)=>{
   try {
     const { oid } = req.params

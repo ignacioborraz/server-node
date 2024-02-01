@@ -18,7 +18,7 @@ usersRouter.post("/", async (req, res, next) => {
 });
 usersRouter.get("/", async (req, res, next) => {
   try {
-    const all = await users.read({});
+    const all = await users.read({ sortAndPaginate: { limit: 20, page: 1, sort: {name: 1} }});
     return res.json({
       statusCode: 200,
       response: all,
