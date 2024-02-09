@@ -1,10 +1,12 @@
 import { Router } from "express";
-import events from "../../data/fs/events.fs.js";
+//import events from "../../data/fs/events.fs.js";
+import { events } from "../../data/mongo/manager.mongo.js";
 import propsEvents from "../../middlewares/propsEvents.mid.js";
+import isAdmin from "../../middlewares/isAdmin.js";
 
 const eventsRouter = Router();
 
-eventsRouter.post("/", propsEvents, async (req, res, next) => {
+eventsRouter.post("/", isAdmin, propsEvents, async (req, res, next) => {
   try {
     const data = req.body;
     const response = await events.createEvent(data);

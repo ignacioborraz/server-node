@@ -1,19 +1,29 @@
 import { Router } from "express";
-import events from "../../data/fs/events.fs.js";
+import { events } from "../../data/mongo/manager.mongo.js";
 
 const eventsRouter = Router();
 
-eventsRouter.get("/", async (req, res, next) => {
+eventsRouter.get("/real", (req, res, next) => {
   try {
-    const all = await events.readEvents();
-    return res.render("events", { events: all, title: "EVENTS" });
+    return res.render("real", { title: "REAL" });
   } catch (error) {
     next(error);
   }
 });
-eventsRouter.get("/new", (req, res, next) => {
+
+eventsRouter.get("/form", async (req, res, next) => {
   try {
-    return res.render("new", { title: "NEW" });
+    return res.render("form");
+  } catch (error) {
+    next(error);
+  }
+});
+
+eventsRouter.get("/:eid", async (req, res, next) => {
+  try {
+    const { eid } = req.params;
+    const one = await events.readOne(eid);
+    return res.render("detail", { event: one });
   } catch (error) {
     next(error);
   }

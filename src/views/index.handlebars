@@ -1,19 +1,26 @@
-<main class="flex-grow-1 d-flex flex-column align-items-center p-3 my-2 w-100">
-  <h2 class="text-center">WELCOME TO CODER CINEMA!</h2>
-  <div
-    class="flex-grow-1 d-flex flex-wrap justify-content-evenly align-items-center"
+<main class="flex-grow-1 m-auto d-flex flex-column">
+  <section id="background">
+    <h1 class="title">CODER CINEMA</h1>
+    <img id="arrow" src="/arrow.gif" alt="arrow" />
+  </section>
+  <h2 class="subtitle mt-4 mb-2 text-center">OUR MOVIES</h2>
+  <input type="text" style="width: 360px" class="m-auto p-2 text-center" placeholder="search..."/>
+  <section
+    id="movies"
+    class="d-flex flex-wrap justify-content-evenly w-100 mt-2 mb-4"
   >
+
     {{#each events}}
-      <div class="card m-2" style="width: 320px;">
+      <a href="/events/{{this._id}}" class="card m-2 anchor" style="width: 360px">
         <img
           src="{{this.poster}}"
-          style="height: 200px;"
+          style="height: 240px"
           class="card-img-top object-fit-cover"
           alt="{{this.name}}"
         />
-        <h5 class="card-title text-center m-1 p-1">{{this.name}}</h5>
-
-      </div>
+        <h5 class="p-2 text-center card-title">{{this.name}}</h5>
+      </a>
     {{/each}}
-  </div>
+  </section>
 </main>
+<script src="/scripts/index.js"></script>

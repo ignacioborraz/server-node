@@ -1,7 +1,5 @@
-const socket = io();
-
 document.querySelector("#newEvent").addEventListener("click", (event) => {
-  event.preventDefault()
+  event.preventDefault();
   const title = document.querySelector("#name").value;
   const poster = document.querySelector("#poster").value;
   const price = document.querySelector("#price").value;
@@ -16,4 +14,15 @@ document.querySelector("#newEvent").addEventListener("click", (event) => {
   place && (data.place = place);
   date && (data.date = date);
   console.log(data);
+  let options = {
+    //construimos el objeto de configuracion
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  };
+  let url = `/api/events/`; //definimos la ruta
+  fetch(url, options) //fetcheamos
+    .then((res) => res.json()) //manejamos la respuesta
+    .then((res) => console.log(res))
+    .catch((err) => console.log(err));
 });

@@ -1,21 +1,21 @@
 import { Router } from "express";
 
+import { events } from "../../data/mongo/manager.mongo.js";
 import eventsRouter from "./events.view.js";
-import usersRouter from "./users.view.js";
-import events from "../../data/fs/events.fs.js";
+import sessionsRouter from "./sessions.view.js";
 
 const viewsRouter = Router();
 
-viewsRouter.get("/", (req, res, next) => {
+viewsRouter.get("/", async (req, res, next) => {
   try {
-    const date = new Date();
-    const all = events.readEvents();
-    return res.render("index", { events: all, date, title: "HOME" });
+    const options = { lean: true };
+    const all = await events.read({ options });
+    return res.render("index", { events: all.docs, title: "INDEX" });
   } catch (error) {
     next(error);
   }
 });
 viewsRouter.use("/events", eventsRouter);
-viewsRouter.use("/users", usersRouter);
+viewsRouter.use("/sessions", sessionsRouter);
 
 export default viewsRouter;

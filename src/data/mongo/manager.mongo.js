@@ -16,10 +16,10 @@ class MongoManager {
       throw error;
     }
   }
-  async read({ filter, sortAndPaginate }) {
+  async read({ filter, options }) {
     try {
-      //const all = await this.model.find(filter)
-      const all = await this.model.paginate(filter, sortAndPaginate);
+      console.log(options);
+      const all = await this.model.paginate(filter, options);
       if (all.length === 0) {
         const error = new Error("There aren't documents");
         error.statusCode = 404;
@@ -51,7 +51,14 @@ class MongoManager {
         },
         { $set: { subTotal: { $multiply: ["$quantity", "$price"] } } },
         { $group: { _id: "$user_id", total: { $sum: "$subTotal" } } },
-        { $project: { _id: 0, user_id: "$_id", total: "$total", date: new Date() } },
+        {
+          $project: {
+            _id: 0,
+            user_id: "$_id",
+            total: "$total",
+            date: new Date(),
+          },
+        },
         //{ $merge: { into: "bills" } },
       ]);
       return report;
@@ -63,6 +70,15 @@ class MongoManager {
     try {
       const one = await this.model.findById(id);
       notFoundOne(one);
+      return one;
+    } catch (error) {
+      throw error;
+    }
+  }
+  async readByEmail(email) {
+    try {
+      const one = await this.model.findOne({ email });
+      //notFoundOne(one);
       return one;
     } catch (error) {
       throw error;

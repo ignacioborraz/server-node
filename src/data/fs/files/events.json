@@ -52,5 +52,14 @@
     "price": "2",
     "capacity": "1000",
     "date": "2024-01-05T22:17:52.959Z"
+  },
+  {
+    "id": "93df9aa32f4ca8d26562fb6e",
+    "name": "Otra",
+    "poster": "https://i.postimg.cc/HxdvTwqJ/events.jpg",
+    "place": "Stadium",
+    "price": 10,
+    "capacity": 50,
+    "date": "2024-02-06T01:00:21.083Z"
   }
 ]
