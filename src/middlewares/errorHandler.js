@@ -1,9 +1,8 @@
-const errorHandler = (error, req, res, next) => {
+export default (error, req, res, next) => {
   console.error(error);
-  return res.status(500).json({
-    status: 500,
-    message: `${req.method} ${req.url} ${error.message}`,
+  return res.status(error.statusCode || 500).json({
+    statusCode: error.statusCode || 500,
+    url: `${req.method} ${req.url}`,
+    message: error.message,
   });
 };
-
-export default errorHandler;

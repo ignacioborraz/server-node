@@ -15,25 +15,41 @@ ordersRouter.post("/", async (req, res, next) => {
     return next(error);
   }
 });
-ordersRouter.get("/",async(req,res,next)=>{
-  try {
-    let filter = {}
-    if (req.query.user_id) {
-      filter = { user_id: req.query.user_id }
-    }
-    const all = await orders.read({filter})
-    return res.json({
-      statusCode: 200,
-      response: all
-    })
-  } catch (error) {
-    return next(error)
-  }
-})
-ordersRouter.get("/report/:uid",async(req,res,next)=>{
+
+ordersRouter.get("/bills/:uid", async (req, res, next) => {
   try {
     const { uid } = req.params;
-    const one = await orders.report(uid);
+    const report = await orders.reportBill(uid);
+    return res.json({
+      statusCode: 200,
+      response: report,
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
+
+ordersRouter.get("/", async (req, res, next) => {
+  try {
+    const filter = {};
+    if (req.query.user_id) {
+      filter.user_id = req.query.user_id;
+    }
+    const all = await orders.read({ filter });
+    return res.json({
+      statusCode: 200,
+      response: all,
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
+
+ordersRouter.put("/:oid", async (req, res, next) => {
+  try {
+    const { oid } = req.params;
+    const data = req.body;
+    const one = await orders.update(oid, data);
     return res.json({
       statusCode: 200,
       response: one,
@@ -41,20 +57,19 @@ ordersRouter.get("/report/:uid",async(req,res,next)=>{
   } catch (error) {
     return next(error);
   }
-})
-ordersRouter.get("/:oid", async(req,res,next)=>{
+});
+
+ordersRouter.delete("/:oid", async (req, res, next) => {
   try {
-    const { oid } = req.params
-    const one = await orders.readOne(oid)
+    const { oid } = req.params;
+    const one = await orders.destroy(oid);
     return res.json({
       statusCode: 200,
-      response: one
-    })
+      response: one,
+    });
   } catch (error) {
-    return next(error)
+    return next(error);
   }
-})
-//router.put()
-//router.delete()
+});
 
 export default ordersRouter;

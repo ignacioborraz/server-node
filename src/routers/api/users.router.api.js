@@ -16,9 +16,22 @@ usersRouter.post("/", async (req, res, next) => {
     return next(error);
   }
 });
+
 usersRouter.get("/", async (req, res, next) => {
   try {
-    const all = await users.read({ sortAndPaginate: { limit: 20, page: 1, sort: {name: 1} }});
+    const options = {
+      limit: req.query.limit || 20,
+      page: req.query.page || 1,
+      sort: { email: 1 },
+    };
+    const filter = {};
+    if (req.query.email) {
+      filter.email = new RegExp(req.query.email.trim(), "i");
+    }
+    if (req.query.sort === "desc") {
+      options.sort.email = "desc";
+    }
+    const all = await users.read({ filter, options });
     return res.json({
       statusCode: 200,
       response: all,
@@ -27,13 +40,10 @@ usersRouter.get("/", async (req, res, next) => {
     return next(error);
   }
 });
+
 usersRouter.get("/stats", async (req, res, next) => {
   try {
-    const queries = {};
-    if (req.query.maxAge) {
-      queries.age = { "$lt": Number(req.query.maxAge) };
-    }
-    const all = await users.stats({ filter: queries });
+    const all = await users.stats({});
     return res.json({
       statusCode: 200,
       response: all,
@@ -42,6 +52,7 @@ usersRouter.get("/stats", async (req, res, next) => {
     return next(error);
   }
 });
+
 usersRouter.get("/:uid", async (req, res, next) => {
   try {
     const { uid } = req.params;
@@ -54,6 +65,7 @@ usersRouter.get("/:uid", async (req, res, next) => {
     return next(error);
   }
 });
+
 usersRouter.put("/:uid", async (req, res, next) => {
   try {
     const { uid } = req.params;
@@ -67,6 +79,7 @@ usersRouter.put("/:uid", async (req, res, next) => {
     return next(error);
   }
 });
+
 usersRouter.delete("/:uid", async (req, res, next) => {
   try {
     const { uid } = req.params;

@@ -1,17 +1,24 @@
-document.querySelector("#newEvent").addEventListener("click", (event) => {
-  event.preventDefault();
-  const email = document.querySelector("#email").value;
-  const password = document.querySelector("#password").value;
-  const data = { email, password };
-  console.log(data);
-  let options = {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  };
-  let url = `/api/sessions/login`; //definimos la ruta
-  fetch(url, options) //fetcheamos
-    .then((res) => res.json()) //manejamos la respuesta
-    .then((res) => res.session ? location.replace("/") : alert(res.message))
-    .catch((err) => console.log(err));
+const selector = document.querySelector("#login");
+selector.addEventListener("click", async () => {
+  try {
+    const data = {
+      email: document.querySelector("#email").value,
+      password: document.querySelector("#password").value,
+    };
+    const opts = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    };
+    let response = await fetch("/api/sessions/login", opts);
+    response = await response.json();
+    //console.log(response);
+    alert(response.message);
+    if (response.token) {
+      localStorage.setItem("token",response.token)
+      location.replace("/");
+    }
+  } catch (error) {
+    alert(error.message);
+  }
 });

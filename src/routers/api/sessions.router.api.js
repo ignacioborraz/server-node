@@ -1,72 +1,143 @@
 import { Router } from "express";
 import passport from "../../middlewares/passport.js";
 
-const authOpts = { session: false, failureRedirect: "/api/sessions/badauth" };
-const forbbidenOpts = {
-  session: false,
-  failureRedirect: "/api/sessions/forbbiden",
-};
-
 const sessionsRouter = Router();
 
+//register
 sessionsRouter.post(
   "/register",
-  passport.authenticate("register", authOpts),
+  passport.authenticate("register", {
+    session: false,
+    failureRedirect: "/api/sessions/badauth",
+  }),
   async (req, res, next) => {
-    try {
-      return res.json({ statusCode: 201, message: "registered" });
-    } catch (error) {
-      return next(error);
-    }
-  }
-);
-sessionsRouter.post(
-  "/login",
-  passport.authenticate("login", authOpts),
-  async (req, res, next) => {
-    try {
-      return res.json({ statusCode: 200, token: req.token, message: "logged in" });
-    } catch (error) {
-      return next(error);
-    }
-  }
-);
-sessionsRouter.get(
-  "/google",
-  passport.authenticate("google", { scope: ["email", "profile"] })
-);
-sessionsRouter.get(
-  "/google/callback",
-  passport.authenticate("google", forbbidenOpts),
-  (req, res, next) => {
     try {
       return res.json({
-        session: req.session,
-        message: "logged in with google",
+        statusCode: 201,
+        message: "Registered!",
       });
     } catch (error) {
       return next(error);
     }
   }
 );
+
+//login
+sessionsRouter.post(
+  "/login",
+  passport.authenticate("login", {
+    session: false,
+    failureRedirect: "/api/sessions/badauth",
+  }),
+  async (req, res, next) => {
+    try {
+      return res.json({
+        statusCode: 200,
+        message: "Logged in!",
+        token: req.token,
+      });
+    } catch (error) {
+      return next(error);
+    }
+  }
+);
+
+//google
+sessionsRouter.post(
+  "/google",
+  passport.authenticate("google", { scope: ["email", "profile"] })
+);
+
+//google-callback
+sessionsRouter.get(
+  "/google/callback",
+  passport.authenticate("google", {
+    session: false,
+    failureRedirect: "/api/sessions/badauth",
+  }),
+  async (req, res, next) => {
+    try {
+      return res.json({
+        statusCode: 200,
+        message: "Logged in with google!",
+        session: req.session,
+      });
+    } catch (error) {
+      return next(error);
+    }
+  }
+);
+
+//google
+sessionsRouter.post(
+  "/github",
+  passport.authenticate("github", { scope: ["user:email"] })
+);
+
+//github-callback
+sessionsRouter.get(
+  "/github/callback",
+  passport.authenticate("github", {
+    session: false,
+    failureRedirect: "/api/sessions/badauth",
+  }),
+  async (req, res, next) => {
+    try {
+      return res.json({
+        statusCode: 200,
+        message: "Logged in with github!",
+        session: req.session,
+      });
+    } catch (error) {
+      return next(error);
+    }
+  }
+);
+
+//me
+sessionsRouter.post("/", async (req, res, next) => {
+  try {
+    if (req.session.email) {
+      return res.json({
+        statusCode: 200,
+        message: "Session with email: " + req.session.email,
+      });
+    } else {
+      const error = new Error("No Auth");
+      error.statusCode = 400;
+      throw error;
+    }
+  } catch (error) {
+    return next(error);
+  }
+});
+
+//signout
 sessionsRouter.post("/signout", async (req, res, next) => {
   try {
-    req.session.destroy();
-    return res.json({ message: "signed out" });
+    if (req.session.email) {
+      req.session.destroy();
+      return res.json({
+        statusCode: 200,
+        message: "Signed out!",
+      });
+    } else {
+      const error = new Error("No Auth");
+      error.statusCode = 400;
+      throw error;
+    }
   } catch (error) {
     return next(error);
   }
 });
-sessionsRouter.get("/badauth", async (req, res, next) => {
+
+//badauth
+sessionsRouter.get("/badauth", (req, res, next) => {
   try {
-    return res.json({ statusCode: 401, message: "bad auth" });
-  } catch (error) {
-    return next(error);
-  }
-});
-sessionsRouter.get("/forbbiden", async (req, res, next) => {
-  try {
-    return res.json({ statusCode: 403, message: "forbbiden" });
+    return res.json({
+      statusCode: 401,
+      message: "Bad auth",
+    });
   } catch (error) {
     return next(error);
   }
