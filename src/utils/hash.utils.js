@@ -6,9 +6,9 @@ function createHash(password) {
   return hashPasword;
 }
 
-function isValidPass(reqPass, dbPass) {
+function verifyHash(reqPass, dbPass) {
   const isValid = compareSync(reqPass, dbPass);
   return isValid;
 }
 
-export { createHash, isValidPass };
+export { createHash, verifyHash };

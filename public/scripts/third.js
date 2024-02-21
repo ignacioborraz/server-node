@@ -2,8 +2,13 @@ const google = document.querySelector("#google");
 google.addEventListener("click", async () => {
   try {
     const opts = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+       /*  "Access-Control-Allow-Headers":
+          "Origin, X-Requested-With, Content-Type, Accept",
+        "Access-Control-Allow-Origin": "*", */
+      },
     };
     let response = await fetch("/api/sessions/google", opts);
     response = await response.json();
@@ -19,7 +24,7 @@ const github = document.querySelector("#github");
 github.addEventListener("click", async () => {
   try {
     const opts = {
-      method: "POST",
+      method: "GET",
       headers: { "Content-Type": "application/json" },
     };
     let response = await fetch("/api/sessions/github", opts);

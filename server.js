@@ -6,6 +6,7 @@ import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import expressSession from "express-session";
 import MongoStore from "connect-mongo";
+import cors from "cors";
 import { engine } from "express-handlebars";
 
 import router from "./src/routers/index.router.js";
@@ -33,10 +34,16 @@ server.set("view engine", "handlebars");
 server.set("views", __dirname + "/src/views");
 
 //middlewares
-server.use(cookieParser("secret"));
+server.use(
+  cors({
+    origin: ['http://localhost:8080', '*'],
+    credentials: true,
+  })
+);
+server.use(cookieParser(process.env.SECRET));
 server.use(
   expressSession({
-    secret: "process.env.SECRET_SESSION",
+    secret: process.env.SECRET,
     resave: true,
     saveUninitialized: true,
     store: new MongoStore({

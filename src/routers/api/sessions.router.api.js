@@ -43,7 +43,7 @@ sessionsRouter.post(
 );
 
 //google
-sessionsRouter.post(
+sessionsRouter.get(
   "/google",
   passport.authenticate("google", { scope: ["email", "profile"] })
 );
@@ -69,7 +69,7 @@ sessionsRouter.get(
 );
 
 //google
-sessionsRouter.post(
+sessionsRouter.get(
   "/github",
   passport.authenticate("github", { scope: ["user:email"] })
 );
