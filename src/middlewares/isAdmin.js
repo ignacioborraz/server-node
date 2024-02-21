@@ -1,6 +1,11 @@
+import { verifyToken } from "../utils/token.utils.js";
+
 const isAdmin = (req, res, next) => {
   try {
-    if (req.session.role === 1) {
+    //console.log(req.headers);
+    const data = verifyToken(req.headers)
+    //console.log(data);
+    if (data.role === 1) {
       return next();
     }
     const error = new Error("Forbidden");
