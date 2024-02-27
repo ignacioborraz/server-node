@@ -9,7 +9,7 @@ import MongoStore from "connect-mongo";
 import cors from "cors";
 import { engine } from "express-handlebars";
 
-import router from "./src/routers/index.router.js";
+import Router from "./src/routers/index.router.js";
 import errorHandler from "./src/middlewares/errorHandler.js";
 import pathHandler from "./src/middlewares/pathHandler.js";
 import __dirname from "./utils.js";
@@ -36,7 +36,7 @@ server.set("views", __dirname + "/src/views");
 //middlewares
 server.use(
   cors({
-    origin: ['http://localhost:8080', '*'],
+    origin: true,
     credentials: true,
   })
 );
@@ -58,7 +58,8 @@ server.use(express.static("public"));
 server.use(morgan("dev"));
 
 //endpoints
-server.use("/", router);
+const router = new Router();
+server.use("/", router.getRouter());
 server.use(errorHandler);
 server.use(pathHandler);
 

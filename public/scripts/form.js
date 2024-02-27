@@ -15,14 +15,17 @@ selector.addEventListener("click", async () => {
       (data.date = document.querySelector("#date").value);
     const opts = {
       method: "POST",
-      headers: { "Content-Type": "application/json", token: localStorage.getItem("token") },
+      headers: {
+        "Content-Type": "application/json",
+        token: localStorage.getItem("token"),
+      },
       body: JSON.stringify(data),
     };
     let response = await fetch("/api/events", opts);
     response = await response.json();
     response.statusCode === 201
       ? alert("Event created!")
-      : alert("ERROR: "+response.message);
+      : alert("ERROR: " + response.message);
   } catch (error) {
     alert(error.message);
   }

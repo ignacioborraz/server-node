@@ -14,8 +14,7 @@ selector.addEventListener("click", async () => {
     response = await response.json();
     //console.log(response);
     alert(response.message);
-    if (response.token) {
-      localStorage.setItem("token",response.token)
+    if (response.statusCode===200) {
       location.replace("/");
     }
   } catch (error) {

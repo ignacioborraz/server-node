@@ -2,6 +2,7 @@ import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { Strategy as GoogleStrategy } from "passport-google-oauth2";
 import { Strategy as GithubStrategy } from "passport-github2";
+import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
 import { createHash, verifyHash } from "../utils/hash.utils.js";
 import { createToken } from "../utils/token.utils.js";
 import { users } from "../data/mongo/manager.mongo.js";
@@ -20,7 +21,7 @@ passport.use(
           let user = await users.create(data);
           return done(null, user);
         } else {
-          return done(null, false);
+          return done(null, false, 401);
         }
       } catch (error) {
         return done(error);
@@ -107,6 +108,27 @@ passport.use(
         req.session.email = user.email;
         req.session.role = user.role;
         return done(null, user);
+      } catch (error) {
+        return done(error);
+      }
+    }
+  )
+);
+passport.use(
+  "jwt",
+  new JwtStrategy(
+    {
+      jwtFromRequest: ExtractJwt.fromExtractors([
+        (req) => req?.cookies["token"],
+      ]),
+      secretOrKey: process.env.SECRET,
+    },
+    async (jwt_payload, done) => {
+      try {
+        //console.log(jwt_payload);
+        let user = await users.readByEmail(jwt_payload.email);
+        if (user) return done(null, user);
+        else return done(null, false);
       } catch (error) {
         return done(error);
       }

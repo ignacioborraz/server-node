@@ -1,15 +1,14 @@
 import { Router } from "express";
 import passport from "../../middlewares/passport.js";
+import isAuth from "../../middlewares/isAuth.js";
+import passCallback from "../../middlewares/passCallback.js";
 
 const sessionsRouter = Router();
 
 //register
 sessionsRouter.post(
   "/register",
-  passport.authenticate("register", {
-    session: false,
-    failureRedirect: "/api/sessions/badauth",
-  }),
+  passCallback("register"),
   async (req, res, next) => {
     try {
       return res.json({
@@ -31,11 +30,15 @@ sessionsRouter.post(
   }),
   async (req, res, next) => {
     try {
-      return res.json({
-        statusCode: 200,
-        message: "Logged in!",
-        token: req.token,
-      });
+      return res
+        .cookie("token", req.token, {
+          maxAge: 60 * 60 * 24 * 7,
+          httpOnly: true,
+        })
+        .json({
+          statusCode: 200,
+          message: "Logged in!",
+        });
     } catch (error) {
       return next(error);
     }
@@ -95,37 +98,28 @@ sessionsRouter.get(
 );
 
 //me
-sessionsRouter.post("/", async (req, res, next) => {
+sessionsRouter.post("/", passCallback("jwt"), async (req, res, next) => {
   try {
-    if (req.session.email) {
-      return res.json({
-        statusCode: 200,
-        message: "Session with email: " + req.session.email,
-      });
-    } else {
-      const error = new Error("No Auth");
-      error.statusCode = 400;
-      throw error;
+    const user = {
+      email: req.user.email,
+      role: req.user.role,
+      photo: req.user.photo,
     }
+    //return res.sendSuccess(user)
+    return res.json({statusCode: 200,response: user})
   } catch (error) {
     return next(error);
   }
 });
 
 //signout
-sessionsRouter.post("/signout", async (req, res, next) => {
+sessionsRouter.post("/signout", passCallback("jwt"), async (req, res, next) => {
   try {
-    if (req.session.email) {
-      req.session.destroy();
-      return res.json({
-        statusCode: 200,
-        message: "Signed out!",
-      });
-    } else {
-      const error = new Error("No Auth");
-      error.statusCode = 400;
-      throw error;
-    }
+    console.log("token");
+    return res.clearCookie("token").json({
+      statusCode: 200,
+      message: "Signed out!",
+    });
   } catch (error) {
     return next(error);
   }
@@ -134,10 +128,14 @@ sessionsRouter.post("/signout", async (req, res, next) => {
 //badauth
 sessionsRouter.get("/badauth", (req, res, next) => {
   try {
-    return res.json({
-      statusCode: 401,
-      message: "Bad auth",
-    });
+    return res.send401();
+  } catch (error) {
+    return next(error);
+  }
+});
+sessionsRouter.get("/forbidden", (req, res, next) => {
+  try {
+    return res.send403();
   } catch (error) {
     return next(error);
   }
