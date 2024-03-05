@@ -1,4 +1,4 @@
-import "dotenv/config.js";
+import env from "./src/utils/env.utils.js";
 import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
@@ -15,10 +15,11 @@ import pathHandler from "./src/middlewares/pathHandler.js";
 import __dirname from "./utils.js";
 import socketUtils from "./src/utils/socket.utils.js";
 import dbUtils from "./src/utils/db.utils.js";
+import args from "./src/utils/args.utils.js";
 
 //server
 const server = express();
-const PORT = process.env.PORT || 8080;
+const PORT = env.PORT || args.p;
 const ready = () => {
   console.log("server ready on port " + PORT);
   dbUtils();
@@ -40,14 +41,14 @@ server.use(
     credentials: true,
   })
 );
-server.use(cookieParser(process.env.SECRET));
+server.use(cookieParser(env.SECRET));
 server.use(
   expressSession({
-    secret: process.env.SECRET,
+    secret: env.SECRET,
     resave: true,
     saveUninitialized: true,
     store: new MongoStore({
-      mongoUrl: process.env.DB_LINK,
+      mongoUrl: env.DB_LINK,
       ttl: 7 * 24 * 60 * 60,
     }),
   })
@@ -64,3 +65,6 @@ server.use(errorHandler);
 server.use(pathHandler);
 
 export { socketServer };
+
+console.log(process.argv);
+console.log(args);
