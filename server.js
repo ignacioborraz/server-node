@@ -66,5 +66,5 @@ server.use(pathHandler);
 
 export { socketServer };
 
-console.log(process.argv);
-console.log(args);
+//console.log(process.argv);
+//console.log(args);
