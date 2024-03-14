@@ -2,8 +2,7 @@ import fs from "fs";
 import crypto from "crypto";
 
 class EventsManager {
-  static #perGain = 0.3;
-  static #totalGain = 0;
+
   init() {
     try {
       const exists = fs.existsSync(this.path);
@@ -44,7 +43,7 @@ class EventsManager {
   readEvents() {
     try {
       if (this.events.length === 0) {
-        const error = new Error("there aren't events!");
+        const error = new Error("NOT FOUND!");
         error.statusCode = 404;
         throw error;
       } else {
@@ -58,7 +57,7 @@ class EventsManager {
     try {
       const one = this.events.find((each) => each.id === id);
       if (!one) {
-        const error = new Error("there isn't event!");
+        const error = new Error("NOT FOUND!");
         error.statusCode = 404;
         throw error;
       } else {
@@ -68,16 +67,15 @@ class EventsManager {
       throw error;
     }
   }
-  async soldticket(quantity, eid) {
+  async updateEvent(eid, data) {
     try {
-      const one = events.readEventById(eid);
-      one.capacity = one.capacity - quantity;
-      EventsManager.#totalGain =
-        EventsManager.#totalGain +
-        one.price * quantity * EventsManager.#perGain;
+      const one =this.events.readEventById(eid);
+      for (let each in data) {
+        one[each] = data[each]
+      }
       const jsonData = JSON.stringify(this.events, null, 2);
       await fs.promises.writeFile(this.path, jsonData);
-      return one.capacity;
+      return one;
     } catch (error) {
       throw error;
     }
@@ -96,4 +94,4 @@ class EventsManager {
 }
 
 const events = new EventsManager("./src/data/fs/files/events.json");
-export default events;
+export default { events };

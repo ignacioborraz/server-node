@@ -1,8 +1,8 @@
-import { events } from "../data/mongo/manager.mongo.js";
+import dao from "../dao/index.dao.js";
 
 class EventsService {
   constructor() {
-    this.model = events;
+    this.model = dao.event;
   }
   create = async (data) => {
     try {

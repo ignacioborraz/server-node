@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { events } from "../../data/mongo/manager.mongo.js";
+import events from "../../dao/mongo/manager.mongo.js";
 import eventsRouter from "./events.view.js";
 import sessionsRouter from "./sessions.view.js";
 import CustomRouter from "../CustomRouter.js";

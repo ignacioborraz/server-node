@@ -1,4 +1,4 @@
-import { orders } from "../../data/mongo/manager.mongo.js";
+import { orders } from "../../dao/mongo/manager.mongo.js";
 import { Router } from "express";
 
 const ordersRouter = Router();

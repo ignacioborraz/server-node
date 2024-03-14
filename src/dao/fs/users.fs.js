@@ -44,7 +44,7 @@ class UsersManager {
   read() {
     try {
       if (this.users.length === 0) {
-        const error = new Error("there aren't users!");
+        const error = new Error("NOT FOUND!");
         error.statusCode = 404;
         throw error;
       } else {
@@ -58,7 +58,7 @@ class UsersManager {
     try {
       const one = this.users.find((each) => each.id === id);
       if (!one) {
-        const error = new Error("there isn't user!");
+        const error = new Error("NOT FOUND!");
         error.statusCode = 404;
         throw error;
       } else {
@@ -68,7 +68,35 @@ class UsersManager {
       throw error;
     }
   }
+  async update(uid, data) {
+    try {
+      const one = this.users.readOne(uid);
+      if (one) {
+        for (let each in data) {
+          one[each] = data[each];
+        }
+        const jsonData = JSON.stringify(this.events, null, 2);
+        await fs.promises.writeFile(this.path, jsonData);
+      }
+      return one;
+    } catch (error) {
+      throw error;
+    }
+  }
+  async destroy(id) {
+    try {
+      const one = this.readOne(id);
+      if (one) {
+        this.users = this.users.filter((each) => each.id !== id);
+        const jsonData = JSON.stringify(this.users, null, 2);
+        await fs.promises.writeFile(this.path, jsonData);
+      }
+      return one;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 const users = new UsersManager("./src/data/fs/files/users.json");
-export default users;
+export default { users };

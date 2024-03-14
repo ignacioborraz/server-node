@@ -5,8 +5,10 @@ import { Strategy as GithubStrategy } from "passport-github2";
 import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
 import { createHash, verifyHash } from "../utils/hash.utils.js";
 import { createToken } from "../utils/token.utils.js";
-import { users } from "../data/mongo/manager.mongo.js";
-const { GOOGLE_ID, GOOGLE_CLIENT, GITHUB_ID, GITHUB_CLIENT } = process.env;
+import { users } from "../dao/mongo/manager.mongo.js";
+import env from "../utils/env.utils.js"
+console.log(env);
+const { SECRET } = env
 
 passport.use(
   "register",
@@ -51,7 +53,7 @@ passport.use(
     }
   )
 );
-passport.use(
+/* passport.use(
   "google",
   new GoogleStrategy(
     {
@@ -113,7 +115,7 @@ passport.use(
       }
     }
   )
-);
+); */
 passport.use(
   "jwt",
   new JwtStrategy(
@@ -121,7 +123,7 @@ passport.use(
       jwtFromRequest: ExtractJwt.fromExtractors([
         (req) => req?.cookies["token"],
       ]),
-      secretOrKey: process.env.SECRET,
+      secretOrKey: SECRET,
     },
     async (jwt_payload, done) => {
       try {
