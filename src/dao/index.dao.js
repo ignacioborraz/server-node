@@ -1,20 +1,19 @@
-//import command from "../config/arguments.js";
+import dbConnection from "../utils/db.utils.js";
 
-const command = { persistence: "MEMORY" };
+const persistence = process.env.PERSISTENCE || "MONGO";
+
 let dao = {};
 
-switch (command.persistence) {
+switch (persistence) {
   case "MEMORY":
-    console.log("persistence: memory");
-    const { default: EventsMemory } = await import("./memory/events.memory.js");
-    //const { default: CartsMemory } = await import("./memory/carts.memory.js");
-    const { default: UsersMemory } = await import("./memory/users.memory.js");
-    dao = { events: EventsMemory, /* carts: CartsMemory, */ Users: UsersMemory };
-    console.log(dao);
     break;
   case "FS":
     break;
   default:
+    dbConnection();
+    const { default: NotesMongo } = await import("./mongo/notes.mongo.js");
+    const { default: UsersMongo } = await import("./mongo/users.mongo.js");
+    dao = { notes: NotesMongo, users: UsersMongo };
     break;
 }
 

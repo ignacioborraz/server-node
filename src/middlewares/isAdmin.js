@@ -1,15 +1,12 @@
-const isAdmin = (req, res, next) => {
+export default (req, res, next) => {
   try {
-    const { role } = req.user;
-    if (role === 1) {
-      return next();
+    if (req.user.role !== "ADMIN") {
+      const error = new Error("Forbidden");
+      error.statusCode = 403;
+      throw error;
     }
-    const error = new Error("Forbidden");
-    error.statusCode = 403;
-    throw error;
+    next();
   } catch (error) {
-    return next(error);
+    next(error);
   }
 };
-
-export default isAdmin;
