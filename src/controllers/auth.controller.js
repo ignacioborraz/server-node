@@ -31,7 +31,7 @@ class AuthController {
   };
   signout = async (req, res, next) => {
     try {
-      console.log("token");
+      //console.log(req.cookies["token"]);
       return res.clearCookie("token").json({
         statusCode: 200,
         message: "Signed out!",

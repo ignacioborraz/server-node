@@ -1,4 +1,6 @@
 import service from "../services/notes.service.js";
+import CustomError from "../utils/errors/CustomError.js";
+import errors from "../utils/errors/errors.js";
 
 class NotesController {
   constructor() {
@@ -6,6 +8,7 @@ class NotesController {
   }
   create = async (req, res, next) => {
     try {
+      //console.log(req.cookies["token"]);
       const data = req.body;
       data.user_id = req.user._id;
       const one = await this.service.create(data);
@@ -28,10 +31,46 @@ class NotesController {
       };
       req.query.category && (filter.category = req.query.category);
       const all = await this.service.read({ filter, options });
-      return res.json({
-        status: 200,
-        response: all,
-      });
+      if (all.docs.length > 0) {
+        return res.json({
+          status: 200,
+          response: all,
+        });
+      } else {
+        CustomError.new(errors.notFound);
+      }
+    } catch (error) {
+      return next(error);
+    }
+  };
+  readOne = async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const one = await this.service.readOne(id);
+      if (one) {
+        return res.json({
+          status: 200,
+          response: one,
+        });
+      } else {
+        CustomError.new(errors.notFound);
+      }
+    } catch (error) {
+      return next(error);
+    }
+  };
+  destroy = async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const one = await this.service.destroy(id);
+      if (one) {
+        return res.json({
+          status: 200,
+          response: one,
+        });
+      } else {
+        CustomError.new(errors.notFound);
+      }
     } catch (error) {
       return next(error);
     }
@@ -39,5 +78,5 @@ class NotesController {
 }
 
 const controller = new NotesController();
-const { create, readByUser } = controller;
-export { create, readByUser };
+const { create, readByUser, readOne, destroy } = controller;
+export { create, readByUser, readOne, destroy };

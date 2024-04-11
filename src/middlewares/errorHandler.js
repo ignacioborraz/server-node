@@ -1,4 +1,4 @@
-export default (error, req, res, next) => {
+const errorHandler = (error, req, res, next) => {
   console.error(error);
   return res.status(error.statusCode || 500).json({
     statusCode: error.statusCode || 500,
@@ -6,3 +6,5 @@ export default (error, req, res, next) => {
     message: error.message,
   });
 };
+
+export default errorHandler;

@@ -1,20 +1,21 @@
+import CustomError from "../utils/errors/CustomError.js";
+import errors from "../utils/errors/errors.js";
 import passport from "./passport.js";
 
-export default (strategy) => {
-  return async (req, res, next) => {
+export default (strategy) => async (req, res, next) => {
+  try {
     passport.authenticate(strategy, (err, user, info) => {
-      //console.log({ err, user, info });
-      if (err) {
-        return next(err);
+      if (err) return next(err);
+      if (user) {
+        req.user = user;
+        return next();
       }
-      if (!user) {
-        return res.json({
-          statusCode: info.statusCode || 400,
-          message: info.message || "Bad auth!",
-        });
-      }
-      req.user = user;
-      return next();
+      CustomError.new({
+        message: info.message || errors.auth.message,
+        statusCode: info.statusCode || errors.auth.statusCode,
+      });
     })(req, res, next);
-  };
+  } catch (error) {
+    return next(error);
+  }
 };
